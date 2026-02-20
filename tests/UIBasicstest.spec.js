@@ -2,7 +2,7 @@
 
 import { expect, test } from "@playwright/test";
 
-test.only("Browser Context Playwright test", async ({ browser }) => 
+test("Browser Context Playwright test", async ({ browser }) => 
 {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -15,6 +15,24 @@ test.only("Browser Context Playwright test", async ({ browser }) =>
 
     console.log ("Titulo : ",await page.title());
     await expect (page).toHaveTitle("ProtoCommerce");
+ 
+});
+
+test.only("Login Wrong Password", async ({ browser }) => 
+{
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+
+    await page.locator("#username").fill("rahulshettyacademy");
+    await page.locator("#password").fill("XXXXXXXXXX");
+    await page.locator("#signInBtn").click();
+
+
+    console.log(await page.locator("[style*='block']").textContent());
+
+    await expect (page.locator("[style*='block']")).toContainText("Incorrect");
  
 });
 
