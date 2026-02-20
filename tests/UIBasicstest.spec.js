@@ -2,14 +2,19 @@
 
 import { expect, test } from "@playwright/test";
 
-test("Browser Context Playwright test", async ({ browser }) => 
+test.only("Browser Context Playwright test", async ({ browser }) => 
 {
     const context = await browser.newContext();
     const page = await context.newPage();
 
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
+    await page.locator("#username").fill("rahulshettyacademy");
+    await page.locator("#password").fill("Learning@830$3mK2");
+    await page.locator("#signInBtn").click();
 
+    console.log ("Titulo : ",await page.title());
+    await expect (page).toHaveTitle("ProtoCommerce");
  
 });
 
