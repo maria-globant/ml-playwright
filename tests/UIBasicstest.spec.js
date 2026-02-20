@@ -1,4 +1,6 @@
-import { test } from "@playwright/test";
+// corrida para ver las pantallas: npx playwright test --headed
+
+import { expect, test } from "@playwright/test";
 
 test("Browser Context Playwright test", async ({ browser }) => 
 {
@@ -6,12 +8,16 @@ test("Browser Context Playwright test", async ({ browser }) =>
     const page = await context.newPage();
 
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+
+
  
 });
 
 
-test("Page  Playwright Test", async ({ page }) => 
+test("Page Playwright Test", async ({ page }) => 
 {
+    await page.goto("https://google.com/");
 
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    console.log ("Titulo : ",await page.title());
+    await expect (page).toHaveTitle("Google");
 });
