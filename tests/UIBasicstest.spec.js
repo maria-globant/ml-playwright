@@ -18,7 +18,7 @@ test("Browser Context Playwright test", async ({ browser }) =>
  
 });
 
-test("Successfully Login Password", async ({ browser }) => 
+test.only("Successfully Login Password", async ({ browser }) => 
 {
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -30,12 +30,12 @@ test("Successfully Login Password", async ({ browser }) =>
     const signInBtn = page.locator("#signInBtn")
     await userName.fill("rahulshettyacademy");
     await password.fill("Learning@830$3mK2");  
-    //await signInBtn.click();
+    await signInBtn.click();
 
+    console.log ("Elements  : ",await page.locator(".card-title a").nth(0).textContent());
+    console.log ("Elements  : ",await page.locator(".card-title a").first().textContent());
+    console.log ("Elements  : ",await page.locator(".card-title a").nth(1).textContent());
 
-    await Promise.all([page.waitForURL('**/angularpractice/shop'), page.click('#signInBtn')]);
-    console.log ("Titulo : ",await page.title());
- 
 });
 
 test("Wrong Login Password", async ({ browser }) => 
