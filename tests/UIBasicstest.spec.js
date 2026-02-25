@@ -18,7 +18,7 @@ test("Browser Context Playwright test", async ({ browser }) =>
  
 });
 
-test.only("Successfully Login Password", async ({ browser }) => 
+test("Successfully Login Password", async ({ browser }) => 
 {
     const context = await browser.newContext();
     const page = await context.newPage();
