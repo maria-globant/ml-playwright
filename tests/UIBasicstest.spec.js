@@ -28,13 +28,20 @@ test.only("Successfully Login Password", async ({ browser }) =>
     const userName = page.locator("#username");
     const password = page.locator("#password");
     const signInBtn = page.locator("#signInBtn")
+    const cardTitles = page.locator(".card-title a");  
+                     
     await userName.fill("rahulshettyacademy");
     await password.fill("Learning@830$3mK2");  
     await signInBtn.click();
 
-    console.log ("Elements  : ",await page.locator(".card-title a").nth(0).textContent());
-    console.log ("Elements  : ",await page.locator(".card-title a").first().textContent());
-    console.log ("Elements  : ",await page.locator(".card-title a").nth(1).textContent());
+    //console.log ("Elements  : ",await cardTitles.nth(0).textContent());
+    //console.log ("Elements  : ",await cardTitles.first().textContent());
+    //console.log ("Elements  : ",await cardTitles.nth(1).textContent());
+
+    const allTitles = await cardTitles.allTextContents();
+    console.log ("All Titles    : ", allTitles);
+
+
 
 });
 
