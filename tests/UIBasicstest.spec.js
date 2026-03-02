@@ -38,8 +38,11 @@ test.only("Successfully Login Password", async ({ browser }) =>
     //console.log ("Elements  : ",await cardTitles.first().textContent());
     //console.log ("Elements  : ",await cardTitles.nth(1).textContent());
 
+    await cardTitles.first().waitFor();   
     const allTitles = await cardTitles.allTextContents();
     console.log ("All Titles    : ", allTitles);
+
+    
 
 
 
