@@ -3,7 +3,7 @@
 import { expect, test } from "@playwright/test";
 
 
-test.only("Successfully Login Password", async ({ page }) => 
+test.only("@Web Client App login", async ({ page }) => 
 {
     await page.goto("https://rahulshettyacademy.com/client/");
     const userName = await page.locator("#userEmail").fill("anshika@gmail.com");
