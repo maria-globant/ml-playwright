@@ -45,6 +45,7 @@ test.only("UI Controls", async ({ page }) =>
     const primero =  await page.locator(".checkmark")
 
     console.log ("UNO: ",primero);
+    await page.pause()
 
 });
 
