@@ -42,10 +42,6 @@ test("Successfully Login Password", async ({ browser }) =>
     const allTitles = await cardTitles.allTextContents();
     console.log ("All Titles    : ", allTitles);
 
-    
-
-
-
 });
 
 test("Wrong Login Password", async ({ browser }) => 
@@ -67,11 +63,19 @@ test("Wrong Login Password", async ({ browser }) =>
  
 });
 
-
-test("Page Playwright Test", async ({ page }) => 
+test.only("UI Controls", async ({ page }) => 
 {
-    await page.goto("https://google.com/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    console.log("Titulo pagina: ", await page.title());
 
-    console.log ("Titulo : ",await page.title());
-    await expect (page).toHaveTitle("Google");
+    const userName = await page.locator("#username").fill("rahulshettyacademy");
+    const password = await page.locator("#password").fill("Learning@830$3mK2");
+    const dropdown = await page.locator("select.form-control");
+    console.log(dropdown);
+    await dropdown.selectOption("consult");
+
+    await  page.locator(".radiotextsty").last().click()
+    await page.locator("#okayBtn").click();
+
+
 });
