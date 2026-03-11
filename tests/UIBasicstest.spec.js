@@ -68,14 +68,33 @@ test.only("UI Controls", async ({ page }) =>
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     console.log("Titulo pagina: ", await page.title());
 
-    const userName = await page.locator("#username").fill("rahulshettyacademy");
-    const password = await page.locator("#password").fill("Learning@830$3mK2");
-    const dropdown = await page.locator("select.form-control");
+    const userName = page.locator("#username").fill("rahulshettyacademy");
+    const password = page.locator("#password").fill("Learning@830$3mK2");
+    const dropdown = page.locator("select.form-control");
     console.log(dropdown);
     await dropdown.selectOption("consult");
 
     await  page.locator(".radiotextsty").last().click()
     await page.locator("#okayBtn").click();
+
+    await expect ( page.locator(".radiotextsty").last()).toBeChecked();
+
+    await page.locator(".radiotextsty").first().click();
+    await expect ( page.locator(".radiotextsty").first()).toBeChecked();
+    await expect ( page.locator(".radiotextsty").last()).not.toBeChecked(); 
+
+    await page.locator("#terms").check();
+    expect ( await page.locator("#terms")).toBeChecked();
+
+    //await page.waitForTimeout(2000); 
+    await page.locator("#terms").uncheck();
+    expect ( await page.locator("#terms").isChecked()).toBeFalsy();
+
+
+    await page.waitForTimeout(3000); 
+
+//await page.pause()
+
 
 
 });
