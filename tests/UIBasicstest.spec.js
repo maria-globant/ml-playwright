@@ -90,6 +90,8 @@ test.only("UI Controls", async ({ page }) =>
     await page.locator("#terms").uncheck();
     expect ( await page.locator("#terms").isChecked()).toBeFalsy();
 
+    console.log("BLINKING ", await page.locator("a.blinkingText").first().textContent());
+
 
     await page.waitForTimeout(3000); 
 
