@@ -71,6 +71,8 @@ test.only("UI Controls", async ({ page }) =>
     const userName = page.locator("#username").fill("rahulshettyacademy");
     const password = page.locator("#password").fill("Learning@830$3mK2");
     const dropdown = page.locator("select.form-control");
+    const documentLink = page.locator("a[href*='documents-request']");
+
     console.log(dropdown);
     await dropdown.selectOption("consult");
 
@@ -90,8 +92,7 @@ test.only("UI Controls", async ({ page }) =>
     await page.locator("#terms").uncheck();
     expect ( await page.locator("#terms").isChecked()).toBeFalsy();
 
-    console.log("BLINKING ", await page.locator("a.blinkingText").first().textContent());
-
+    await expect (documentLink).toHaveAttribute("class", "blinkingText");  
 
     await page.waitForTimeout(3000); 
 
