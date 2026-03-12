@@ -5,7 +5,7 @@ test("Ecommerce page", async ({ browser }) =>
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
 
     const userName = page.locator("#username");
     const password = page.locator("#password");

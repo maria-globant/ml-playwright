@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+//import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -21,6 +21,7 @@ const config = ({
     timeout: 40000
   },
   reporter: 'html',
+  //workers: 3,  // para correr los test de forma secuencial, poner a 1, para correr en paralelo, poner a mas de 1  
   use: {
     //browserName: 'chromium',
     //browserName: 'firefox',

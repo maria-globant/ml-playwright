@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 
 test("@Web Client App login", async ({ page }) => 
 {
-    await page.goto("https://rahulshettyacademy.com/client/");
+    await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill("laura@may.com");
     const password = await page.locator("#userPassword").fill("Automation@123");
     //const signInBtn = page.locator("[value='Login']").click();

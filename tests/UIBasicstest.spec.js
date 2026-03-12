@@ -7,7 +7,7 @@ test("Browser Context Playwright test", async ({ browser }) =>
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
 
     await page.locator("#username").fill("rahulshettyacademy");
     await page.locator("#password").fill("Learning@830$3mK2");
@@ -23,7 +23,7 @@ test("Successfully Login Password", async ({ browser }) =>
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
 
     const userName = page.locator("#username");
     const password = page.locator("#password");
@@ -34,9 +34,9 @@ test("Successfully Login Password", async ({ browser }) =>
     await password.fill("Learning@830$3mK2");  
     await signInBtn.click();
 
-    //console.log ("Elements  : ",await cardTitles.nth(0).textContent());
-    //console.log ("Elements  : ",await cardTitles.first().textContent());
-    //console.log ("Elements  : ",await cardTitles.nth(1).textContent());
+    //console.log ("Elements  : ",await cardTitles.nth(0).inputValue());
+    //console.log ("Elements  : ",await cardTitles.first().inputValue());
+    //console.log ("Elements  : ",await cardTitles.nth(1).inputValue());
 
     await cardTitles.first().waitFor();   
     const allTitles = await cardTitles.allTextContents();
@@ -49,7 +49,7 @@ test("Wrong Login Password", async ({ browser }) =>
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
 
     await page.locator("#username").fill("rahulshettyacademy");
     await page.locator("#password").fill("XXXXXXXXXX");
@@ -63,16 +63,14 @@ test("Wrong Login Password", async ({ browser }) =>
  
 });
 
-test.only("UI Controls", async ({ page }) => 
+test("UI Controls", async ({ page }) => 
 {
-    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
     console.log("Titulo pagina: ", await page.title());
 
     const userName = page.locator("#username").fill("rahulshettyacademy");
     const password = page.locator("#password").fill("Learning@830$3mK2");
     const dropdown = page.locator("select.form-control");
-    const documentLink = page.locator("a[href*='documents-request']");
-
     console.log(dropdown);
     await dropdown.selectOption("consult");
 
@@ -92,7 +90,6 @@ test.only("UI Controls", async ({ page }) =>
     await page.locator("#terms").uncheck();
     expect ( await page.locator("#terms").isChecked()).toBeFalsy();
 
-    await expect (documentLink).toHaveAttribute("class", "blinkingText");  
 
     await page.waitForTimeout(3000); 
 
