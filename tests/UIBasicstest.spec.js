@@ -91,10 +91,41 @@ test("UI Controls", async ({ page }) =>
     expect ( await page.locator("#terms").isChecked()).toBeFalsy();
 
 
+
+
     await page.waitForTimeout(3000); 
 
-//await page.pause()
-
-
+//await page.pause(
 
 });
+
+test.only("Child Windows Handling", async ({ browser }) => 
+{
+       const context = await browser.newContext();
+    const page = await context.newPage();
+    const userName = page.locator("#username")
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/", { timeout: 60000 });
+    console.log("Titulo pagina: ", await page.title());
+
+    const documentLink = page.locator("a[href*='documents-request']");
+  
+    const [newPage] = await Promise.all(
+    [
+        context.waitForEvent("page"),
+        documentLink.click()
+])
+
+    console.log("Titulo pagina hija: ", await newPage.title());
+    const text = await newPage.locator(".im-para.red").textContent();
+    console.log("Texto de la pagina hija: ", text);
+    const domain = text.split("@")[1].split(" ")[0];
+    console.log("Email extraido: ", domain);
+
+    await userName.fill(domain);
+
+    console.log("Usuario: ", await userName.inputValue());
+
+   // await page.waitForTimeout(3000); 
+
+//await page.pause()
+ });
