@@ -91,15 +91,13 @@ test("UI Controls", async ({ page }) =>
     expect ( await page.locator("#terms").isChecked()).toBeFalsy();
 
 
-
-
     await page.waitForTimeout(3000); 
 
 //await page.pause(
 
 });
 
-test.only("Child Windows Handling", async ({ browser }) => 
+test("Child Windows Handling", async ({ browser }) => 
 {
        const context = await browser.newContext();
     const page = await context.newPage();
