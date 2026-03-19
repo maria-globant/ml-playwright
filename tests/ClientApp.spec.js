@@ -34,11 +34,10 @@ test.only("@Web E2E Client App", async ({ page }) =>
     await page.waitForLoadState("networkidle");
 
     //await page.locator(".card-body b").first().waitFor();    
-
     const tiles = await page.locator(".card-body b").allTextContents();
     console.log(tiles);
 
-    // Seleccionar el artículo de Zara y agregar al carrito
+    // Seleccionar el artículo de Zara y agregarlo al carrito
     const product = page.locator(".card-body");
     console.log("Cantidad de productos:", await product.count());
     const count = await product.count()
