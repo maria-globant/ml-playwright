@@ -52,17 +52,12 @@ test.only("@Web E2E Client App", async ({ page }) =>
     }
 
     // Ir al carrito
-    //await page.locator("[routerlink='/dashboard/cart']").click();
-    await page.locator("[routerlink*='/cart']").click();
-    await page.waitForLoadState("networkidle");
-
+       await page.locator("[routerlink*='/cart']").click();
+    await page.locator("div li").first().waitFor({ state: "visible" });
+ 
     // Verificar que el artículo esté en el carrito
-    //const cartItems = await page.locator(".cartSection h3").allTextContents();
-    //console.log("Items en el carrito:", cartItems);
-    //expect(cartItems).toContain("ZARA COAT 3");
-
     // Alternativamente, verificar que el artículo esté visible en el carrito
-    
+
     const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
     expect(bool).toBeTruthy();
 
