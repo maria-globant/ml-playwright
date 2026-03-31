@@ -3,8 +3,7 @@
 import { expect, test } from "@playwright/test";
 
 
-test("@Web Client App login", async ({ page }) => 
-{
+test("@Web Client App login", async ({ page }) => {
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill("laura@may.com");
     const password = await page.locator("#userPassword").fill("Automation@123");
@@ -22,8 +21,7 @@ test("@Web Client App login", async ({ page }) =>
 
 });
 
-test.only("@Web E2E Client App", async ({ page }) => 
-{
+test.only("@Web E2E Client App", async ({ page }) => {
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill("laura@may.com");
     const password = await page.locator("#userPassword").fill("Automation@123");
@@ -32,7 +30,7 @@ test.only("@Web E2E Client App", async ({ page }) =>
     await signInBtn.click();
 
     await page.waitForLoadState("networkidle");
-    await page.locator(".card-body b").first().waitFor();    
+    await page.locator(".card-body b").first().waitFor();
 
     const tiles = await page.locator(".card-body b").allTextContents();
     console.log(tiles);
@@ -52,9 +50,9 @@ test.only("@Web E2E Client App", async ({ page }) =>
     }
 
     // Ir al carrito
-       await page.locator("[routerlink*='/cart']").click();
+    await page.locator("[routerlink*='/cart']").click();
     await page.locator("div li").first().waitFor({ state: "visible" });
- 
+
     // Verificar que el artículo esté en el carrito
     // Alternativamente, verificar que el artículo esté visible en el carrito
 
@@ -66,11 +64,44 @@ test.only("@Web E2E Client App", async ({ page }) =>
     await page.waitForLoadState("networkidle");
 
     // Ingresar datos de la tarjeta
-    await page.locator("[placeholder='Select Country']").pressSequentially("Argentina");
-    const countryDropdown = page.locator(".suggestions .ng-star-inserted");
-    await countryDropdown.filter({ hasText: "Argentina" }).click();
+    ///         await page.locator("[placeholder='Select Country']").pressSequentially("Argentina");
+    ///         const countryDropdown = page.locator(".suggestions .ng-star-inserted");
+    ///         await countryDropdown.filter({ hasText: "Argentina" }).click();
     //await page.locator("[placeholder='Select Country']").click();
     //await page.keyboard.type("Argentina");
+
+
+    // Escribir el país
+    await page.locator("[placeholder*='Select Country']").pressSequentially("ind");
+
+    // Esperar y seleccionar la opción correcta
+    // const countryOption = page.locator(".suggestions .ng-star-inserted", { hasText: "India" });
+    //await countryOption.waitFor({ state: "visible" });
+    //await countryOption.filter({ hasText: "Argentina" }).click();
+    const dropdown = page.locator(".ta-results");
+    await dropdown.waitFor();
+    const optionCount = await dropdown.locator("button").count();
+    for (let i = 0; i < optionCount; i++) {
+        const text = await dropdown.locator("button").nth(i).textContent();
+
+        if (text.trim() === "India") {
+            await dropdown.locator("button").nth(i).click();
+            break;
+        }
+    }
+
+    /*
+    const buttons = dropdown.locator("button");
+    await buttons.first().waitFor({ state: "visible" });
+    const btnCount = await buttons.count();
+    for (let i = 0; i < btnCount; i++) {
+        const text = await buttons.nth(i).textContent();
+        if (text.trim() === "India") {
+            await buttons.nth(i).click();
+            break;
+        }
+    }
+*/
 
     // Seleccionar tarjeta de crédito Visa y llenar CVV
     await page.locator("input[type='radio'][value='VISA']").click();
