@@ -22,8 +22,9 @@ test("@Web Client App login", async ({ page }) => {
 });
 
 test.only("@Web E2E Client App", async ({ page }) => {
+    const email = "laura@may.com"
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-    const userName = await page.locator("#userEmail").fill("laura@may.com");
+    const userName = await page.locator("#userEmail").fill(email);
     const password = await page.locator("#userPassword").fill("Automation@123");
     //const signInBtn = page.locator("[value='Login']").click();
     const signInBtn = page.locator("#login")
@@ -102,17 +103,46 @@ test.only("@Web E2E Client App", async ({ page }) => {
         }
     }
 */
+    // .user__name [type="test"]
+    expect(await page.locator(".user__name [type='text']").first()).toHaveText(email);
+
+
+    //Presiono el boton de Place Order sin llenar el CVV para verificar que se muestre el mensaje de error
+
+    await page.locator(".btnn").click();
+
+    //const errorMessage = await page.locator(".alert-danger").textContent();
+    //console.log("Error Message:", errorMessage);
+    //expect(errorMessage).toContain("Please fill the CVV");
+ 
+
 
     // Seleccionar tarjeta de crédito Visa y llenar CVV
+    /*
     await page.locator("input[type='radio'][value='VISA']").click();
     await page.locator("input[placeholder*='CVV']").fill("888");
 
     // Hacer clic en Place Order
     await page.locator("button:has-text('Place Order')").click();
     await page.waitForLoadState("networkidle");
+    */
 
     // Copiar el código de la compra
-    const orderIdText = await page.locator(".hero-primary").textContent();
+
+    console.log("Esperando el mensaje de confirmación...");
+    await page.locator(".hero-primary").waitFor({ state: "visible" });
+    //const mensaje = await page.locator(".hero-primary").textContent({ timeout: 10000 });
+    expect( page.locator(".hero-primary")).toContainText("Thankyou for the order.");
+
+    //console.log("Mensaje de confirmación visible.", mensaje );
+
+    //expect(page.locator(".hero-primary")).toContainText("Thank you for the order.");
+
+    const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+
+    console.log("Order ID:", orderID);
+  
+/*
     const orderId = orderIdText.match(/\|?\s*([A-Za-z0-9]+)\s*\|?/)?.[1] ?? "";
     console.log("Order ID:", orderId);
 
@@ -125,6 +155,7 @@ test.only("@Web E2E Client App", async ({ page }) => {
     const orderRow = page.locator("tbody tr").filter({ hasText: orderId });
     await expect(orderRow).toBeVisible();
     console.log("Orden encontrada en el historial:", orderId);
+    */
 
 });
 
