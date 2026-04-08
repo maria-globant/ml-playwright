@@ -72,7 +72,7 @@ test.only("@Web E2E Client App", async ({ page }) => {
 
 
     // Escribir el país
-    await page.locator("[placeholder*='Select Country']").pressSequentially("ind");
+    await page.locator("[placeholder*='Select Country']").pressSequentially("ind", { delay: 150 });
 
     // Esperar y seleccionar la opción correcta
     // const countryOption = page.locator(".suggestions .ng-star-inserted", { hasText: "India" });
