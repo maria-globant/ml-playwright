@@ -46,6 +46,7 @@ test.only("@Web E2E Client App", async ({ page }) => {
         console.log("Producto:", title);
         if (title.trim() === "ZARA COAT 3") {
             await product.nth(i).locator("text= Add To Cart").click();
+            console.log("Producto agregado al carrito:", i, title);
             break;
         }
     }
@@ -138,9 +139,42 @@ test.only("@Web E2E Client App", async ({ page }) => {
 
     //expect(page.locator(".hero-primary")).toContainText("Thank you for the order.");
 
-    const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+    const orderIDRaw = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+    const orderID = orderIDRaw.replace(/\|/g, "").trim();   
 
-    console.log("Order ID:", orderID);
+    console.log("Order ID:", orderIDRaw, orderID);
+
+    await page.locator(".fa-handshake-o").click();
+    await page.waitForLoadState("networkidle");
+
+    // Validar que estamos en la página con la tabla "My Orders"
+    
+   await page.locator("button[routerlink*='myorders']").click();
+   await page.locator("tbody").waitFor();
+   const orderTable =  page.locator("tbody tr");
+
+
+    const orderCount = await orderTable.count();
+    let orderFound = false;
+
+    for (let i = 0; i < orderCount; i++) {
+        const rowText = await orderTable.nth(i).locator("th").textContent();
+        if (rowText.includes(orderID)) {
+            orderFound = true;
+            await orderTable.nth(i).locator("button").first().click();
+            console.log("Orden encontrada en el historial:", orderID);
+            break;
+        }
+    }
+
+       const orderIdDetails = await page.locator(".col-text").textContent();
+   expect(orderID.includes(orderIdDetails)).toBeTruthy();
+
+    
+    //await page.waitForSelector('text=Carrito'); 
+
+
+
   
 /*
     const orderId = orderIdText.match(/\|?\s*([A-Za-z0-9]+)\s*\|?/)?.[1] ?? "";
