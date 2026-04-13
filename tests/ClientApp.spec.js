@@ -83,11 +83,14 @@ test.only("@Web E2E Client App", async ({ page }) => {
     const dropdown = page.locator(".ta-results");
     await dropdown.waitFor();
     const optionCount = await dropdown.locator("button").count();
+    let country
+        ;
     for (let i = 0; i < optionCount; i++) {
         const text = await dropdown.locator("button").nth(i).textContent();
 
         if (text.trim() === "India") {
             await dropdown.locator("button").nth(i).click();
+            country = text.trim();
             break;
         }
     }
@@ -115,7 +118,7 @@ test.only("@Web E2E Client App", async ({ page }) => {
     //const errorMessage = await page.locator(".alert-danger").textContent();
     //console.log("Error Message:", errorMessage);
     //expect(errorMessage).toContain("Please fill the CVV");
- 
+
 
 
     // Seleccionar tarjeta de crédito Visa y llenar CVV
@@ -133,14 +136,14 @@ test.only("@Web E2E Client App", async ({ page }) => {
     console.log("Esperando el mensaje de confirmación...");
     await page.locator(".hero-primary").waitFor({ state: "visible" });
     //const mensaje = await page.locator(".hero-primary").textContent({ timeout: 10000 });
-    expect( page.locator(".hero-primary")).toContainText("Thankyou for the order.");
+    expect(page.locator(".hero-primary")).toContainText("Thankyou for the order.");
 
     //console.log("Mensaje de confirmación visible.", mensaje );
 
     //expect(page.locator(".hero-primary")).toContainText("Thank you for the order.");
 
     const orderIDRaw = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-    const orderID = orderIDRaw.replace(/\|/g, "").trim();   
+    const orderID = orderIDRaw.replace(/\|/g, "").trim();
 
     console.log("Order ID:", orderIDRaw, orderID);
 
@@ -148,10 +151,10 @@ test.only("@Web E2E Client App", async ({ page }) => {
     await page.waitForLoadState("networkidle");
 
     // Validar que estamos en la página con la tabla "My Orders"
-    
-   await page.locator("button[routerlink*='myorders']").click();
-   await page.locator("tbody").waitFor();
-   const orderTable =  page.locator("tbody tr");
+
+    await page.locator("button[routerlink*='myorders']").click();
+    await page.locator("tbody").waitFor();
+    const orderTable = page.locator("tbody tr");
 
 
     const orderCount = await orderTable.count();
@@ -167,29 +170,65 @@ test.only("@Web E2E Client App", async ({ page }) => {
         }
     }
 
-       const orderIdDetails = await page.locator(".col-text").textContent();
-   expect(orderID.includes(orderIdDetails)).toBeTruthy();
+    const orderIdDetails = await page.locator(".col-text").textContent();
+    expect(orderID.includes(orderIdDetails)).toBeTruthy();
 
+    await page.locator(".email-wrapper").waitFor({ state: "visible" });
+
+    //const orderIdSummaryDetails = await page.locator(".email-container");
+
+    const billingEmail = await page.locator('div.address', { hasText: 'Billing Address' }).locator('p.text').nth(0).textContent();
+    const billingEmailCountryFull = await page.locator('div.address', { hasText: 'Billing Address' }).locator('p.text').nth(1).textContent();
+
+    const deliveryEmail = await page.locator('div.address', { hasText: 'Delivery Address' }).locator('p.text').nth(0).textContent();
+    const deliveryCountryFull = await page.locator('div.address', { hasText: 'Delivery Address' }).locator('p.text').nth(1).textContent();
+
+    const billingEmailCountry = billingEmailCountryFull.split(" - ")[1].trim(); // "India"
+    const deliveryCountry = deliveryCountryFull.split(" - ")[1].trim(); // "India"
+
+
+    expect(billingEmail.trim()).toBe(email);
+    expect(deliveryEmail.trim()).toBe(email);
+    expect(billingEmailCountry.trim()).toBe(country);
+    expect(deliveryCountry.trim()).toBe(country);
+
+
+    //console.log("Order Summary Details:", await orderIdSummaryDetails.textContent());
+
+    /*
     
+         for (let i = 0; i < await orderIdSummaryDetails.count(); i++) {
+            const rowText = await orderIdSummaryDetails.locator("row");
+    
+            console.log("Order Summary Details Row:", rowText);
+            
+        }   */
+
+    //    for (let i = 0; i < orderSummaryDetails.count(); i++) {
+    //     const rowText = await orderTable.nth(i).locator("th").textContent();
+
+
+
+
     //await page.waitForSelector('text=Carrito'); 
 
 
 
-  
-/*
-    const orderId = orderIdText.match(/\|?\s*([A-Za-z0-9]+)\s*\|?/)?.[1] ?? "";
-    console.log("Order ID:", orderId);
 
-    // Ir al historial de compras
-    await page.locator("button:has-text('Orders')").click();
-    await page.waitForLoadState("networkidle");
-
-    // Buscar la compra en el historial
-    await page.locator("input[placeholder='Search Order Ids']").fill(orderId);
-    const orderRow = page.locator("tbody tr").filter({ hasText: orderId });
-    await expect(orderRow).toBeVisible();
-    console.log("Orden encontrada en el historial:", orderId);
-    */
+    /*
+        const orderId = orderIdText.match(/\|?\s*([A-Za-z0-9]+)\s*\|?/)?.[1] ?? "";
+        console.log("Order ID:", orderId);
+    
+        // Ir al historial de compras
+        await page.locator("button:has-text('Orders')").click();
+        await page.waitForLoadState("networkidle");
+    
+        // Buscar la compra en el historial
+        await page.locator("input[placeholder='Search Order Ids']").fill(orderId);
+        const orderRow = page.locator("tbody tr").filter({ hasText: orderId });
+        await expect(orderRow).toBeVisible();
+        console.log("Orden encontrada en el historial:", orderId);
+        */
 
 });
 
