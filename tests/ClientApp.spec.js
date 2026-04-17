@@ -21,7 +21,7 @@ test("@Web Client App login", async ({ page }) => {
 
 });
 
-test.only("@Web E2E Client App", async ({ page }) => {
+test("@Web E2E Client App", async ({ page }) => {
     const email = "laura@may.com"
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill(email);
