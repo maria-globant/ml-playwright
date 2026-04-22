@@ -3,66 +3,34 @@
 import { expect, test } from "@playwright/test";
 
 
-test("@Web Client App login", async ({ page }) => {
-    await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-    const userName = await page.locator("#userEmail").fill("laura@may.com");
-    const password = await page.locator("#userPassword").fill("Automation@123");
-    //const signInBtn = page.locator("[value='Login']").click();
-    const signInBtn = page.locator("#login")
-    await signInBtn.click();
-
-    await page.waitForLoadState("networkidle");
-
-    //await page.locator(".card-body b").first().waitFor();    
-
-    const tiles = await page.locator(".card-body b").allTextContents();
-
-    console.log(tiles);
-
-});
-
 test("@Web E2E Client App", async ({ page }) => {
     const email = "laura@may.com"
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-    const userName = await page.locator("#userEmail").fill(email);
-    const password = await page.locator("#userPassword").fill("Automation@123");
+    const userName = await page.getByPlaceholder("email@example.com").fill(email);
+    const password = await page.getByPlaceholder("enter your passsword").fill("Automation@123");
     //const signInBtn = page.locator("[value='Login']").click();
-    const signInBtn = page.locator("#login")
-    await signInBtn.click();
+    await page.getByRole("button", { name: "Login" }).click();
 
     await page.waitForLoadState("networkidle");
     await page.locator(".card-body b").first().waitFor();
 
-    const tiles = await page.locator(".card-body b").allTextContents();
-    console.log(tiles);
+    await page.locator(".card-body").filter({ hasText: "ZARA COAT 3" }).getByRole("button", { name: " Add To Cart" }).click();
 
     // Seleccionar el artículo de Zara y agregarlo al carrito
-    const product = page.locator(".card-body");
-    console.log("Cantidad de productos:", await product.count());
-    const count = await product.count()
-
-    for (let i = 0; i < count; i++) {
-        const title = await product.nth(i).locator("b").textContent();
-        console.log("Producto:", title);
-        if (title.trim() === "ZARA COAT 3") {
-            await product.nth(i).locator("text= Add To Cart").click();
-            console.log("Producto agregado al carrito:", i, title);
-            break;
-        }
-    }
-
-    // Ir al carrito
-    await page.locator("[routerlink*='/cart']").click();
+    await page.getByRole("listitem").getByRole("button", { name: "Cart" }).click();
     await page.locator("div li").first().waitFor({ state: "visible" });
+
 
     // Verificar que el artículo esté en el carrito
     // Alternativamente, verificar que el artículo esté visible en el carrito
 
-    const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
-    expect(bool).toBeTruthy();
+    //const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
+    //expect(bool).toBeTruthy();
+
+    await page.getByText('ZARA COAT 3').isVisible();
 
     // Hacer checkout
-    await page.locator("button:has-text('Checkout')").click();
+    await page.getByRole("button", { name: "Checkout" }).click();
     await page.waitForLoadState("networkidle");
 
     // Ingresar datos de la tarjeta
