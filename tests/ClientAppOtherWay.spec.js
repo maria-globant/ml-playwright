@@ -27,7 +27,7 @@ test("@Web E2E Client App", async ({ page }) => {
     //const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
     //expect(bool).toBeTruthy();
 
-    await page.getByText('ZARA COAT 3').isVisible();
+    await expect(page.getByText('ZARA COAT 3')).toBeVisible();
 
     // Hacer checkout
     await page.getByRole("button", { name: "Checkout" }).click();
@@ -42,7 +42,8 @@ test("@Web E2E Client App", async ({ page }) => {
 
 
     // Escribir el país
-    await page.locator("[placeholder*='Select Country']").pressSequentially("ind", { delay: 150 });
+    await page.getByPlaceholder("Select Country").pressSequentially("ind", { delay: 150 });
+    //await page.locator("[placeholder*='Select Country']").pressSequentially("ind", { delay: 150 });
 
     // Esperar y seleccionar la opción correcta
     // const countryOption = page.locator(".suggestions .ng-star-inserted", { hasText: "India" });
@@ -51,8 +52,7 @@ test("@Web E2E Client App", async ({ page }) => {
     const dropdown = page.locator(".ta-results");
     await dropdown.waitFor();
     const optionCount = await dropdown.locator("button").count();
-    let country
-        ;
+    let country;
     for (let i = 0; i < optionCount; i++) {
         const text = await dropdown.locator("button").nth(i).textContent();
 
@@ -62,26 +62,16 @@ test("@Web E2E Client App", async ({ page }) => {
             break;
         }
     }
+    /* se podría usar también, pero está forzado el 1
+    await dropdown.locator("button", { hasText: "India" }).nth(1).click();
+    */
 
-    /*
-    const buttons = dropdown.locator("button");
-    await buttons.first().waitFor({ state: "visible" });
-    const btnCount = await buttons.count();
-    for (let i = 0; i < btnCount; i++) {
-        const text = await buttons.nth(i).textContent();
-        if (text.trim() === "India") {
-            await buttons.nth(i).click();
-            break;
-        }
-    }
-*/
     // .user__name [type="test"]
     expect(await page.locator(".user__name [type='text']").first()).toHaveText(email);
 
 
     //Presiono el boton de Place Order sin llenar el CVV para verificar que se muestre el mensaje de error
-
-    await page.locator(".btnn").click();
+    await page.getByText("Place Order ").click();
 
     //const errorMessage = await page.locator(".alert-danger").textContent();
     //console.log("Error Message:", errorMessage);
@@ -93,7 +83,7 @@ test("@Web E2E Client App", async ({ page }) => {
     /*
     await page.locator("input[type='radio'][value='VISA']").click();
     await page.locator("input[placeholder*='CVV']").fill("888");
-
+    
     // Hacer clic en Place Order
     await page.locator("button:has-text('Place Order')").click();
     await page.waitForLoadState("networkidle");
@@ -104,7 +94,7 @@ test("@Web E2E Client App", async ({ page }) => {
     console.log("Esperando el mensaje de confirmación...");
     await page.locator(".hero-primary").waitFor({ state: "visible" });
     //const mensaje = await page.locator(".hero-primary").textContent({ timeout: 10000 });
-    expect(page.locator(".hero-primary")).toContainText("Thankyou for the order.");
+    expect(page.getByText("Thankyou for the order.")).toBeVisible();
 
     //console.log("Mensaje de confirmación visible.", mensaje );
 
