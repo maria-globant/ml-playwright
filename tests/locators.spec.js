@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 
-test.only("Playwright special locators", async ({ page }) => {
+test("Playwright special locators", async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/angularpractice/", { timeout: 60000 });
 
