@@ -20,35 +20,16 @@ test("@Web E2E Client App", async ({ page }) => {
     await page.getByRole("listitem").getByRole("button", { name: "Cart" }).click();
     await page.locator("div li").first().waitFor({ state: "visible" });
 
-
-    // Verificar que el artículo esté en el carrito
-    // Alternativamente, verificar que el artículo esté visible en el carrito
-
-    //const bool = await page.locator("h3:has-text('ZARA COAT 3')").isVisible();
-    //expect(bool).toBeTruthy();
-
     await expect(page.getByText('ZARA COAT 3')).toBeVisible();
 
     // Hacer checkout
     await page.getByRole("button", { name: "Checkout" }).click();
     await page.waitForLoadState("networkidle");
 
-    // Ingresar datos de la tarjeta
-    ///         await page.locator("[placeholder='Select Country']").pressSequentially("Argentina");
-    ///         const countryDropdown = page.locator(".suggestions .ng-star-inserted");
-    ///         await countryDropdown.filter({ hasText: "Argentina" }).click();
-    //await page.locator("[placeholder='Select Country']").click();
-    //await page.keyboard.type("Argentina");
-
 
     // Escribir el país
     await page.getByPlaceholder("Select Country").pressSequentially("ind", { delay: 150 });
-    //await page.locator("[placeholder*='Select Country']").pressSequentially("ind", { delay: 150 });
 
-    // Esperar y seleccionar la opción correcta
-    // const countryOption = page.locator(".suggestions .ng-star-inserted", { hasText: "India" });
-    //await countryOption.waitFor({ state: "visible" });
-    //await countryOption.filter({ hasText: "Argentina" }).click();
     const dropdown = page.locator(".ta-results");
     await dropdown.waitFor();
     const optionCount = await dropdown.locator("button").count();
@@ -66,28 +47,12 @@ test("@Web E2E Client App", async ({ page }) => {
     await dropdown.locator("button", { hasText: "India" }).nth(1).click();
     */
 
-    // .user__name [type="test"]
     expect(await page.locator(".user__name [type='text']").first()).toHaveText(email);
 
 
     //Presiono el boton de Place Order sin llenar el CVV para verificar que se muestre el mensaje de error
     await page.getByText("Place Order ").click();
 
-    //const errorMessage = await page.locator(".alert-danger").textContent();
-    //console.log("Error Message:", errorMessage);
-    //expect(errorMessage).toContain("Please fill the CVV");
-
-
-
-    // Seleccionar tarjeta de crédito Visa y llenar CVV
-    /*
-    await page.locator("input[type='radio'][value='VISA']").click();
-    await page.locator("input[placeholder*='CVV']").fill("888");
-    
-    // Hacer clic en Place Order
-    await page.locator("button:has-text('Place Order')").click();
-    await page.waitForLoadState("networkidle");
-    */
 
     // Copiar el código de la compra
 
@@ -95,10 +60,6 @@ test("@Web E2E Client App", async ({ page }) => {
     await page.locator(".hero-primary").waitFor({ state: "visible" });
     //const mensaje = await page.locator(".hero-primary").textContent({ timeout: 10000 });
     expect(page.getByText("Thankyou for the order.")).toBeVisible();
-
-    //console.log("Mensaje de confirmación visible.", mensaje );
-
-    //expect(page.locator(".hero-primary")).toContainText("Thank you for the order.");
 
     const orderIDRaw = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
     const orderID = orderIDRaw.replace(/\|/g, "").trim();
