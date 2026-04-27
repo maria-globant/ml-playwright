@@ -5,6 +5,7 @@ test("Calendar validations", async ({ page }) => {
     const monthNumber = "6"; // Junio
     const year = "2027";
     const date = "15";
+    const expectecList = [monthNumber, date, year]
 
     await page.goto("https://rahulshettyacademy.com/seleniumPractise/#/offers");
 
@@ -23,22 +24,10 @@ test("Calendar validations", async ({ page }) => {
     //await page.locator(`//abbr[text()='${date}']`).click();
     await page.locator('.react-calendar__month-view').getByRole('button', { name: date }).click();
 
-    console.log("Fecha seleccionada:", year, monthNumber, date);
+    // console.log("Fecha seleccionada:", year, monthNumber, date);
 
-    console.log("Fecha mostrada Año:", await page.locator('[name="year"]').inputValue())
-    console.log("Fecha mostrada Mes:", await page.locator('[name="month"]').inputValue())
-    console.log("Fecha mostrada Día:", await page.locator('[name="date"]').inputValue())
+    expect(await page.locator('[name="year"]').inputValue()).toEqual(year);
+    expect(await page.locator('[name="month"]').inputValue()).toEqual(monthNumber);
+    expect(await page.locator('[name="day"]').inputValue()).toEqual(date);
 
-    expect(await page.locator('[name="year"]').inputValue()).toBe(year);
-    expect(await page.locator('[name="month"]').inputValue()).toBe(monthNumber);
-    expect(await page.locator('[name="day"]').inputValue()).toBe(date);
-
-
-
-
-
-
-
-
-    // .react-date-picker__wrapper
 });
