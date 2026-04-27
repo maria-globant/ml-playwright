@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+// para hacer una corrida con degug: npx playwright test --calendar.spec.js --debug
+
 test("Calendar validations", async ({ page }) => {
 
     const monthNumber = "6"; // Junio
