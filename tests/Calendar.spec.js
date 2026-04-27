@@ -4,7 +4,11 @@ import { expect, test } from "@playwright/test";
 // se pueden seleccionar locators, diferentes a los que vienen del flujo,  
 // te muestra el valor del locator en el momento de la corrida
 // se puede chequear en el runtime si hay mas de un locator con ese valor
-// 
+//
+// Como grabar la prueba: npx playwright codegen https://rahulshettyacademy.com/seleniumPractise/#/offers
+// Es la url donde vos queres que comience a grabar
+// esta generando el codigo a media que vas navegando x la aplicacion, y lo va mostrando en la consola
+
 
 test("Calendar validations", async ({ page }) => {
 
