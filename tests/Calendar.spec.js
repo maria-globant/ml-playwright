@@ -1,6 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 // para hacer una corrida con degug: npx playwright test --calendar.spec.js --debug
+// se pueden seleccionar locators, diferentes a los que vienen del flujo,  
+// te muestra el valor del locator en el momento de la corrida
+// se puede chequear en el runtime si hay mas de un locator con ese valor
+// 
 
 test("Calendar validations", async ({ page }) => {
 
