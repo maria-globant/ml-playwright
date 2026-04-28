@@ -84,7 +84,7 @@ test("UI Controls", async ({ page }) =>
     await expect ( page.locator(".radiotextsty").last()).not.toBeChecked(); 
 
     await page.locator("#terms").check();
-    expect ( await page.locator("#terms")).toBeChecked();
+    await expect (page.locator("#terms")).toBeChecked();
 
     //await page.waitForTimeout(2000); 
     await page.locator("#terms").uncheck();
