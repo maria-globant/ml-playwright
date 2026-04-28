@@ -8,6 +8,7 @@ import { expect, test } from "@playwright/test";
 // Como grabar la prueba: npx playwright codegen https://rahulshettyacademy.com/seleniumPractise/#/offers
 // Es la url donde vos queres que comience a grabar
 // esta generando el codigo a media que vas navegando x la aplicacion, y lo va mostrando en la consola
+//
 
 
 test("Calendar validations", async ({ page }) => {
