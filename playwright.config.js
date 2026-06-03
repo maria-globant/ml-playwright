@@ -27,7 +27,7 @@ const config = ({
     //browserName: 'firefox',
     //browserName: 'webkit',
     browserName: 'chromium',
-    headless : false,  // true para correr sin mostrar la pantalla, false para mostrarla  
+    headless: true,  // true para correr sin mostrar la pantalla, false para mostrarla  
   },
 
 });
