@@ -1,5 +1,9 @@
 // corrida para ver las pantallas: npx playwright test --headed
 
+// herramienta para ver el trace: npx playwright show-trace trace.zip
+// o usar esta url: https://trace.playwright.dev/
+//
+
 import { expect, test } from "@playwright/test";
 
 
@@ -21,7 +25,7 @@ test("@Web Client App login", async ({ page }) => {
 
 });
 
-test("@Web E2E Client App", async ({ page }) => {
+test.only("@Web E2E Client App", async ({ page }) => {
     const email = "laura@may.com"
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill(email);
