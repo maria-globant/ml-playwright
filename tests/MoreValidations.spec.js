@@ -22,4 +22,14 @@ test.only("Popup validations", async ({ page }) => {
 
     await page.locator("#mousehover").hover();
 
+    //iframes --> como detectarlos y como interactuar con ellos
+    const framesPage = page.frameLocator("#courses-iframe")
+    await framesPage.locator("li a[href*='lifetime-access']:visible").click();
+
+    const textCheck = await framesPage.locator("div[class='text'] h2").textContent();
+    console.log(" Numero: ----->. ", textCheck.split(" ")[1]);
+
+
+
+
 });
