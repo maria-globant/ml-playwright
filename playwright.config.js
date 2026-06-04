@@ -29,7 +29,7 @@ const config = ({
     //browserName: 'firefox',
     //browserName: 'webkit',
     browserName: 'chromium',
-    headless: false,  // true para correr sin mostrar la pantalla, false para mostrarla  
+    headless: true,  // true para correr sin mostrar la pantalla, false para mostrarla  
     screenshot: 'on',  // para tomar screenshot
     //trace: 'on', para tomar el trace solo cuando falla el test, es un video que muestra el paso a paso del test, con los logs de cada paso, y los screenshots de cada paso, para poder debuguear el test en caso de que falle   
     trace: 'retain-on-failure',  // para tomar el trace solo cuando falla el test, 
