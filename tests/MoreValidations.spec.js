@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 // para hacer la corrida con --ui, te permite seleccionar que queres corrar y las pantallas q va corriendo
 
 
-test("Popup validations", async ({ page }) => {
+test.only("Popup validations", async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
     // await page.goto("http://google.com");
@@ -16,4 +16,10 @@ test("Popup validations", async ({ page }) => {
     await page.locator("#hide-textbox").click();
 
     await expect(page.locator("displayed-text")).toBeHidden();
+    page.on("dialog", (dialog) => dialog.accept());
+
+    await page.locator("#confirmbtn").click();
+
+    await page.locator("#mousehover").hover();
+
 });
