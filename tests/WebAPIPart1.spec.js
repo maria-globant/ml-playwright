@@ -5,6 +5,7 @@ import { expect, test, request } from "@playwright/test";
 // para hacer la corrida con --ui, te permite seleccionar que queres corrar y las pantallas q va corriendo
 
 const loginPayload = { userEmail: "mlestefania@hotmail.com", userPassword: "Automation$385" };
+let token;
 
 test.beforeAll(async () => {
 
@@ -13,11 +14,9 @@ test.beforeAll(async () => {
         data: loginPayload
     });
     expect(loginResponse.ok()).toBeTruthy();
-    const loginResponseJson = loginResponse.json();
-    const token = (await loginResponseJson).token;
+    const loginResponseJson = await loginResponse.json();
+    token = loginResponseJson.token;
     console.log("Token:", token);
-
-
 
 });
 
@@ -37,6 +36,14 @@ test.only("Web Api validations", async ({ page }) => {
     const signInBtn = page.locator("#login")
     await signInBtn.click();
     */
+
+    await page.addInitScript(value => {
+        window.localStorage.setItem("token", value);
+    }, token);
+
+    const email = loginPayload.userEmail;
+
+    await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
 
     await page.waitForLoadState("networkidle");
     await page.locator(".card-body b").first().waitFor();
