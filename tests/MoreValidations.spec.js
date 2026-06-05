@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 // para hacer la corrida con --ui, te permite seleccionar que queres corrar y las pantallas q va corriendo
 
 
-test.only("Popup validations", async ({ page }) => {
+test("Popup validations", async ({ page }) => {
 
     await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
     // await page.goto("http://google.com");

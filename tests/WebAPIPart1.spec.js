@@ -1,31 +1,34 @@
-// corrida para ver las pantallas: npx playwright test --headed
+import { expect, test, request } from "@playwright/test";
 
-// herramienta para ver el trace: npx playwright show-trace trace.zip
-// o usar esta url: https://trace.playwright.dev/
-//
+// para hacer una corrida con degug: npx playwright test --calendar.spec.js --debug
+// se pueden seleccionar locators, diferentes a los que vienen del flujo,  
+// para hacer la corrida con --ui, te permite seleccionar que queres corrar y las pantallas q va corriendo
 
-import { expect, test } from "@playwright/test";
+const loginPayload = { userEmail: "mlestefania@hotmail.com", userPassword: "Automation$385" };
+
+test.beforeAll(async () => {
+
+    const apiContext = await request.newContext();
+    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
+        data: loginPayload
+    });
+    expect(loginResponse.ok()).toBeTruthy();
+    const loginResponseJson = loginResponse.json();
+    const token = (await loginResponseJson).token;
+    console.log("Token:", token);
 
 
-test("@Web Client App login", async ({ page }) => {
-    await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-    const userName = await page.locator("#userEmail").fill("laura@may.com");
-    const password = await page.locator("#userPassword").fill("Automation@123");
-    //const signInBtn = page.locator("[value='Login']").click();
-    const signInBtn = page.locator("#login")
-    await signInBtn.click();
-
-    await page.waitForLoadState("networkidle");
-
-    //await page.locator(".card-body b").first().waitFor();    
-
-    const tiles = await page.locator(".card-body b").allTextContents();
-
-    console.log(tiles);
 
 });
 
-test("@Web E2E Client App", async ({ page }) => {
+test.beforeEach(() => {
+
+});
+
+
+test.only("Web Api validations", async ({ page }) => {
+
+    /*
     const email = "laura@may.com"
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
     const userName = await page.locator("#userEmail").fill(email);
@@ -33,6 +36,7 @@ test("@Web E2E Client App", async ({ page }) => {
     //const signInBtn = page.locator("[value='Login']").click();
     const signInBtn = page.locator("#login")
     await signInBtn.click();
+    */
 
     await page.waitForLoadState("networkidle");
     await page.locator(".card-body b").first().waitFor();
@@ -70,20 +74,11 @@ test("@Web E2E Client App", async ({ page }) => {
     await page.waitForLoadState("networkidle");
 
     // Ingresar datos de la tarjeta
-    ///         await page.locator("[placeholder='Select Country']").pressSequentially("Argentina");
-    ///         const countryDropdown = page.locator(".suggestions .ng-star-inserted");
-    ///         await countryDropdown.filter({ hasText: "Argentina" }).click();
-    //await page.locator("[placeholder='Select Country']").click();
-    //await page.keyboard.type("Argentina");
-
-
     // Escribir el país
     await page.locator("[placeholder*='Select Country']").pressSequentially("ind", { delay: 150 });
 
     // Esperar y seleccionar la opción correcta
-    // const countryOption = page.locator(".suggestions .ng-star-inserted", { hasText: "India" });
-    //await countryOption.waitFor({ state: "visible" });
-    //await countryOption.filter({ hasText: "Argentina" }).click();
+
     const dropdown = page.locator(".ta-results");
     await dropdown.waitFor();
     const optionCount = await dropdown.locator("button").count();
@@ -99,19 +94,6 @@ test("@Web E2E Client App", async ({ page }) => {
         }
     }
 
-    /*
-    const buttons = dropdown.locator("button");
-    await buttons.first().waitFor({ state: "visible" });
-    const btnCount = await buttons.count();
-    for (let i = 0; i < btnCount; i++) {
-        const text = await buttons.nth(i).textContent();
-        if (text.trim() === "India") {
-            await buttons.nth(i).click();
-            break;
-        }
-    }
-*/
-    // .user__name [type="test"]
     expect(await page.locator(".user__name [type='text']").first()).toHaveText(email);
 
 
@@ -119,32 +101,12 @@ test("@Web E2E Client App", async ({ page }) => {
 
     await page.locator(".btnn").click();
 
-    //const errorMessage = await page.locator(".alert-danger").textContent();
-    //console.log("Error Message:", errorMessage);
-    //expect(errorMessage).toContain("Please fill the CVV");
-
-
-
-    // Seleccionar tarjeta de crédito Visa y llenar CVV
-    /*
-    await page.locator("input[type='radio'][value='VISA']").click();
-    await page.locator("input[placeholder*='CVV']").fill("888");
-
-    // Hacer clic en Place Order
-    await page.locator("button:has-text('Place Order')").click();
-    await page.waitForLoadState("networkidle");
-    */
-
     // Copiar el código de la compra
 
     console.log("Esperando el mensaje de confirmación...");
     await page.locator(".hero-primary").waitFor({ state: "visible" });
     //const mensaje = await page.locator(".hero-primary").textContent({ timeout: 10000 });
     expect(page.locator(".hero-primary")).toContainText("Thankyou for the order.");
-
-    //console.log("Mensaje de confirmación visible.", mensaje );
-
-    //expect(page.locator(".hero-primary")).toContainText("Thank you for the order.");
 
     const orderIDRaw = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
     const orderID = orderIDRaw.replace(/\|/g, "").trim();
@@ -179,8 +141,6 @@ test("@Web E2E Client App", async ({ page }) => {
 
     await page.locator(".email-wrapper").waitFor({ state: "visible" });
 
-    //const orderIdSummaryDetails = await page.locator(".email-container");
-
     const billingEmail = await page.locator('div.address', { hasText: 'Billing Address' }).locator('p.text').nth(0).textContent();
     const billingEmailCountryFull = await page.locator('div.address', { hasText: 'Billing Address' }).locator('p.text').nth(1).textContent();
 
@@ -198,6 +158,3 @@ test("@Web E2E Client App", async ({ page }) => {
 
 
 });
-
-
-
