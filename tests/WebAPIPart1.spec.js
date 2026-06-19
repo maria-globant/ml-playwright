@@ -1,4 +1,5 @@
 import { expect, test, request } from "@playwright/test";
+import { create } from "node:domain";
 
 // para hacer una corrida con degug: npx playwright test --calendar.spec.js --debug
 // se pueden seleccionar locators, diferentes a los que vienen del flujo,  
@@ -14,18 +15,12 @@ let orderID;
 
 test.beforeAll(async () => {
 
-    // Login API para obtener el token
     const apiContext = await request.newContext();
-    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
-        data: loginPayload
-    });
-    expect(loginResponse.ok()).toBeTruthy();
-    const loginResponseJson = await loginResponse.json();
-    token = loginResponseJson.token;
-    console.log("Token:", token);
 
     //
 
+
+    /*
     const orderResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order", {
         data: orderPayload,
         headers: {
@@ -39,7 +34,7 @@ test.beforeAll(async () => {
     orderID = orderResponseJson.orders[0];
     console.log("Order ID:", orderID);
 
-
+*/
 
 });
 
@@ -49,6 +44,9 @@ test.beforeEach(() => {
 
 
 test.only("Web Api validations", async ({ page }) => {
+
+    const ApiUtils = new APIUtils(apiContext);
+    const orderId = await ApiUtils.createOrder();
 
     await page.addInitScript(value => {
         window.localStorage.setItem("token", value);
