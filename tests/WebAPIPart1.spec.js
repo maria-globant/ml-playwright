@@ -1,45 +1,24 @@
 import { expect, test, request } from "@playwright/test";
+import { create } from "node:domain";
+import APIUtils from "./utils/APIUtils.js";
+
 
 // para hacer una corrida con degug: npx playwright test --calendar.spec.js --debug
 // se pueden seleccionar locators, diferentes a los que vienen del flujo,  
 // para hacer la corrida con --ui, te permite seleccionar que queres corrar y las pantallas q va corriendo
 
-const loginPayload = { userEmail: "mlestefania@hotmail.com", userPassword: "Automation$385" };
-const orderPayload = { orders: [{ country: "India", productOrderedId: "6960eac0c941646b7a8b3e68" }] };
+//const loginPayload = { userEmail: "mlestefania@hotmail.com", userPassword: "Automation$385" };
+//const orderPayload = { orders: [{ country: "India", productOrderedId: "6960eac0c941646b7a8b3e68" }] };
 
 // https://rahulshettyacademy.com/api/ecom/order/create-order
 
-let token;
-let orderID;
+//let token;
+//let orderID;
+let apiContext;
 
 test.beforeAll(async () => {
 
-    // Login API para obtener el token
-    const apiContext = await request.newContext();
-    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
-        data: loginPayload
-    });
-    expect(loginResponse.ok()).toBeTruthy();
-    const loginResponseJson = await loginResponse.json();
-    token = loginResponseJson.token;
-    console.log("Token:", token);
-
-    //
-
-    const orderResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order", {
-        data: orderPayload,
-        headers: {
-            'Authorization': token,
-            'Content-Type': 'application/json'
-        }
-    });
-    const orderResponseJson = await orderResponse.json();
-    console.log("Order Response:", orderResponseJson);
-
-    orderID = orderResponseJson.orders[0];
-    console.log("Order ID:", orderID);
-
-
+    apiContext = await request.newContext();
 
 });
 
@@ -50,14 +29,19 @@ test.beforeEach(() => {
 
 test.only("Web Api validations", async ({ page }) => {
 
+    const ApiUtils = new APIUtils(apiContext);
+    const orderID = await ApiUtils.createOrder();
+
+    console.log("Order ID from API:", orderID);
+    const token = await ApiUtils.getToken();
+    console.log("Token:", token);
+
     await page.addInitScript(value => {
         window.localStorage.setItem("token", value);
     }, token);
-
-    const email = loginPayload.userEmail;
+    //const email = loginPayload.userEmail;
 
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-
     await page.waitForLoadState("networkidle");
     ///////
 
