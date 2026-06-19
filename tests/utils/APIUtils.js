@@ -7,14 +7,15 @@ class APIUtils {
         this.orderPayload = {
             orders: [
                 {
-                    country: "India",
+                    country: "Argentina",
                     productOrderedId: "6960eac0c941646b7a8b3e68"
                 }
             ]
         };
-        this.loginPayload = { 
-            userEmail: "mlestefania@hotmail.com", 
-            userPassword: "Automation$385" };
+        this.loginPayload = {
+            userEmail: "mlestefania@hotmail.com",
+            userPassword: "Automation$385"
+        };
     }
 
     async getToken() {
@@ -26,8 +27,7 @@ class APIUtils {
         });
         expect(loginResponse.ok()).toBeTruthy();
         const loginResponseJson = await loginResponse.json();
-        console.log("Login Response Token:", loginResponseJson.token);
-    
+
         return loginResponseJson.token;
     }
 
@@ -41,12 +41,9 @@ class APIUtils {
             }
         });
         const orderResponseJson = await orderResponse.json();
-        console.log("Order Response:", orderResponseJson);
         const orderID = orderResponseJson.orders[0];
-        console.log("Order ID:", orderID);
         return orderID;
     }
-
 }
 
 export default APIUtils;

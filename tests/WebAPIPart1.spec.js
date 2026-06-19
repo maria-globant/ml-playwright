@@ -12,7 +12,7 @@ import APIUtils from "./utils/APIUtils.js";
 
 // https://rahulshettyacademy.com/api/ecom/order/create-order
 
-let token;
+//let token;
 //let orderID;
 let apiContext;
 
@@ -42,9 +42,6 @@ test.only("Web Api validations", async ({ page }) => {
     //const email = loginPayload.userEmail;
 
     await page.goto("https://rahulshettyacademy.com/client/", { timeout: 60000 });
-
-    console.log("Page URL:", page.url());
-
     await page.waitForLoadState("networkidle");
     ///////
 
