@@ -31,10 +31,13 @@ test.only("Web Api validations", async ({ page }) => {
 
     const ApiUtils = new APIUtils(apiContext);
     const orderID = await ApiUtils.createOrder();
+    const email = ApiUtils.loginPayload.userEmail;
+    const country = ApiUtils.orderPayload.orders[0].country;
 
     console.log("Order ID from API:", orderID);
     const token = await ApiUtils.getToken();
     console.log("Token:", token);
+
 
     await page.addInitScript(value => {
         window.localStorage.setItem("token", value);
@@ -69,8 +72,6 @@ test.only("Web Api validations", async ({ page }) => {
     expect(orderID.includes(orderIdDetails)).toBeTruthy();
 
 
-    /*
-
     await page.locator(".email-wrapper").waitFor({ state: "visible" });
 
     const billingEmail = await page.locator('div.address', { hasText: 'Billing Address' }).locator('p.text').nth(0).textContent();
@@ -88,6 +89,5 @@ test.only("Web Api validations", async ({ page }) => {
     expect(billingEmailCountry.trim()).toBe(country);
     expect(deliveryCountry.trim()).toBe(country);
 
-    */
 
 });
