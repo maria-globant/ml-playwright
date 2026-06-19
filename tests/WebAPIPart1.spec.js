@@ -89,7 +89,7 @@ test.only("Web Api validations", async ({ page }) => {
     expect(billingEmailCountry.trim()).toBe(country);
     expect(deliveryCountry.trim()).toBe(country);
 
-    ////
+    //// Validar que el producto en el detalle de la orden sea el mismo que se ordenó por API
 
 
 });
